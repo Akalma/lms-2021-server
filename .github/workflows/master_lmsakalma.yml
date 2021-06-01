@@ -50,4 +50,4 @@ jobs:
         app-name: 'lmsakalma'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_4361be9aa3dd4560b7b11f8832d64b6a }}
-        package: '*.war'
+        package: '*.jar'
