@@ -30,7 +30,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: lmsspringbootapp.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_9cc0ef7d5fd3495fa86fe84ca839bf4f }}/lms:${{ github.sha }}
+        tags: lms
         file: ./Dockerfile
 
   deploy:
