@@ -13,6 +13,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
+@SuppressWarnings("ALL")
 @RestController
 @RequestMapping("/v2")
 @Api(value = "LMS App User Login And Password Update APIs")
@@ -41,4 +42,11 @@ public class AppUsersController {
 		AppUsersTo appUsersTo = iAppUsersService.resetPassword(currentPassword, newPassword, email);
 		return ResponseEntity.ok(appUsersTo);
 	}
+
+	@GetMapping("/health")
+	public ResponseEntity health() {
+		return ResponseEntity.ok().build();
+
+	}
+
 }

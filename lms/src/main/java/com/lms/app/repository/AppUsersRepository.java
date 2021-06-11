@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.lms.app.entity.AppUsers;
 
+@SuppressWarnings("ALL")
 @Repository
 public interface AppUsersRepository extends JpaRepository<AppUsers, Long> {
 	/**
