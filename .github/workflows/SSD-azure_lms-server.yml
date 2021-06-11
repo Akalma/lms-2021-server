@@ -23,14 +23,14 @@ jobs:
       uses: docker/login-action@v1
       with:
         registry: https://lmsspringbootapp.azurecr.io/
-        username: ${{ secrets.AzureAppService_ContainerUsername_17e7370228724d92822a212e5a452678 }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_3322070666ce406c9c91d99ca593d47f }}
+        username: ${{ secrets.AzureAppService_ContainerUsername_6e08b7f9716d40ec931e046ab1abea67 }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_40ef423aea884cf68e91605189f0bca3 }}
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: lmsspringbootapp.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_17e7370228724d92822a212e5a452678 }}/lms:${{ github.sha }}
+        tags: lmsspringbootapp.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_6e08b7f9716d40ec931e046ab1abea67 }}/lms:${{ github.sha }}
         file: ./Dockerfile
 
   deploy:
@@ -47,5 +47,5 @@ jobs:
       with:
         app-name: 'lms-server'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_c95a6b8db20e48c5864b08d5a897ff4a }}
-        images: 'lmsspringbootapp.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_17e7370228724d92822a212e5a452678 }}/lms:${{ github.sha }}'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_c97b712e72574306b3ae3634b81a7d1e }}
+        images: 'lmsspringbootapp.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_6e08b7f9716d40ec931e046ab1abea67 }}/lms:${{ github.sha }}'
