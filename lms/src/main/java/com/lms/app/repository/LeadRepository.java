@@ -18,7 +18,7 @@ public interface LeadRepository extends JpaRepository<Lead, Long> {
 	 * @param to   To Date
 	 * @return List of Reports.
 	 */
-	@Query(value = "select * from lead where creared_date between :from and :to order by creared_date desc", nativeQuery = true)
+	@Query(value = "select * from leads where creared_date between :from and :to order by creared_date desc", nativeQuery = true)
 	public List<Lead> findAllByDate(@Param("from") Date from, @Param("to") Date to, Pageable pageable);
 
 	/**
@@ -29,7 +29,7 @@ public interface LeadRepository extends JpaRepository<Lead, Long> {
 	 * @param id   AppUser Id
 	 * @return List of Reports.
 	 */
-	@Query(value = "select * from lead where creared_date between :from and :to and added_by =:id order by creared_date desc", nativeQuery = true)
+	@Query(value = "select * from leads where creared_date between :from and :to and added_by =:id order by creared_date desc", nativeQuery = true)
 	public List<Lead> findAllByDateAndId(@Param("from") Date from, @Param("to") Date to, @Param("id") Integer id,
 			Pageable pageable);
 
@@ -39,10 +39,10 @@ public interface LeadRepository extends JpaRepository<Lead, Long> {
 	 * @param to TO date
 	 * @return {@link Integer}
 	 */
-	@Query(value = "select count(*) from lead where creared_date between :from and :to", nativeQuery = true)
+	@Query(value = "select count(*) from leads where creared_date between :from and :to", nativeQuery = true)
 	public Integer findNumberOfReportsByDate(@Param("from") Date from, @Param("to") Date to);
 
-	@Query(value = "select count(*) from lead where creared_date between :from and :to and added_by =:id", nativeQuery = true)
+	@Query(value = "select count(*) from leads where creared_date between :from and :to and added_by =:id", nativeQuery = true)
 	public Integer findNumberOfReportsByDateAndId(@Param("from") Date from, @Param("to") Date to, @Param("id") Integer id);
 
 }
