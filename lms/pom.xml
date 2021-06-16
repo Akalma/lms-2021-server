@@ -10,8 +10,8 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.LMS</groupId>
-	<artifactId>LMS</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>lms</artifactId>
+	<version>0.0.1</version>
 	<name>LMS</name>
 	<description>LMS project for Spring Boot</description>
 	<properties>
@@ -19,6 +19,8 @@
 		<org.lombok.version>1.18.12</org.lombok.version>
 		<m2e.apt.activation>jdt_apt</m2e.apt.activation>
 		<springfox.swagger.version>2.9.2</springfox.swagger.version>
+		<jib-maven-plugin.version>3.0.0</jib-maven-plugin.version>
+		<docker.image.prefix>lmsspringbootapp.azurecr.io</docker.image.prefix>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -118,6 +120,19 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<mainClass>com.lms.app.LmsApplication</mainClass>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>jib-maven-plugin</artifactId>
+				<groupId>com.google.cloud.tools</groupId>
+				<version>${jib-maven-plugin.version}</version>
+				<configuration>
+					<from>
+						<image>mcr.microsoft.com/java/jre:8-zulu-alpine</image>
+					</from>
+					<to>
+						<image>${docker.image.prefix}/${project.artifactId}:prod1.0</image>
+					</to>
 				</configuration>
 			</plugin>
 		</plugins>
