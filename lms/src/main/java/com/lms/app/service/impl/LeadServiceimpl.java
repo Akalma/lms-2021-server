@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.lms.app.value.InvalidPayloadException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -39,6 +41,7 @@ public class LeadServiceimpl implements ILeadService {
 	 */
 	@Override
 	public LeadTo saveLead(LeadTo leadTo) {
+		if (leadTo.getAddedBy()==null) throw new InvalidPayloadException("must provide added by value.");
 		long addedBy = Long.parseLong(leadTo.getAddedBy());
 		AppUsers findById = appRepository.findAppUsersById(addedBy);
 		Lead lead = dozerUtils.convert(leadTo, Lead.class);
@@ -77,21 +80,17 @@ public class LeadServiceimpl implements ILeadService {
 				throw new PageNotAvailableException();
 			else {
 				List<Lead> findAllByDate = leadRepository.findAllByDate(fromDate, toDate, pageable);
-				return (List<LeadTo>) findAllByDate.stream().map(lt -> {
+				return findAllByDate.stream().map(lt -> {
 					LeadTo leadTo = dozerUtils.convert(lt, LeadTo.class);
-					Long appUserId = lt.getAppUsers().getId();
-					String appUserIdTo=""+appUserId;
-					leadTo.setAddedBy(appUserIdTo);
+					if (lt.getAppUsers()!=null)leadTo.setAddedBy(""+lt.getAppUsers().getId());
 					return leadTo;
 				}).collect(Collectors.toList());
 			}
 		} else {
 			List<Lead> findAllByDateAndId = leadRepository.findAllByDateAndId(fromDate, toDate, id, pageable);
-			return (List<LeadTo>) findAllByDateAndId.stream().map(lt -> {
+			return findAllByDateAndId.stream().map(lt -> {
 				LeadTo leadTo = dozerUtils.convert(lt, LeadTo.class);
-				Long appUserId = lt.getAppUsers().getId();
-				String appUserIdTo=""+appUserId;
-				leadTo.setAddedBy(appUserIdTo);
+				if(lt.getAppUsers()!=null) leadTo.setAddedBy(""+lt.getAppUsers().getId());
 				return leadTo;
 			}).collect(Collectors.toList());
 		}
