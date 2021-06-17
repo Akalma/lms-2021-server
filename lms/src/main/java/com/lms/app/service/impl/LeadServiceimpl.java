@@ -90,7 +90,7 @@ public class LeadServiceimpl implements ILeadService {
 			List<Lead> findAllByDateAndId = leadRepository.findAllByDateAndId(fromDate, toDate, id, pageable);
 			return findAllByDateAndId.stream().map(lt -> {
 				LeadTo leadTo = dozerUtils.convert(lt, LeadTo.class);
-				if(lt.getAppUsers().getId()!=null) leadTo.setAddedBy(""+lt.getAppUsers().getId());
+				if(lt.getAppUsers()!=null) leadTo.setAddedBy(""+lt.getAppUsers().getId());
 				return leadTo;
 			}).collect(Collectors.toList());
 		}
