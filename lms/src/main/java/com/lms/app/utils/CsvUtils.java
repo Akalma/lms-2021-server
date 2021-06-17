@@ -25,10 +25,18 @@ public class CsvUtils {
 		final CSVFormat format = CSVFormat.DEFAULT.withHeader(headers);
 		try (ByteArrayOutputStream out = new ByteArrayOutputStream();
 				CSVPrinter csvPrinter = new CSVPrinter(new PrintWriter(out), format);) {
+			List<Serializable> data=null;
 			for (Lead leads : lead) {
-				List<Serializable> data = Arrays.asList(String.valueOf(leads.getId()), leads.getFirstName(),
-						leads.getLastName(), leads.getMobile(), leads.getArea(), leads.getExistingBroadband(),
-						leads.getLeadType(), leads.getAppUsers().getId(), leads.getDate(), leads.getRemarks());
+				if (leads.getAppUsers()!=null){
+					      data = Arrays.asList(String.valueOf(leads.getId()), leads.getFirstName(),
+							leads.getLastName(), leads.getMobile(), leads.getArea(), leads.getExistingBroadband(),
+							leads.getLeadType(), leads.getAppUsers().getId(), leads.getDate(), leads.getRemarks());
+				}
+				else{
+					data = Arrays.asList(String.valueOf(leads.getId()), leads.getFirstName(),
+							leads.getLastName(), leads.getMobile(), leads.getArea(), leads.getExistingBroadband(),
+							leads.getLeadType(), null, leads.getDate(), leads.getRemarks());
+				}
 				csvPrinter.printRecord(data);
 			}
 			csvPrinter.flush();
