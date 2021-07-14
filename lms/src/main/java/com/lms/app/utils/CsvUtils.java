@@ -7,6 +7,9 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+
+import com.lms.app.entity.AppUsers;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import com.lms.app.entity.Lead;
@@ -18,7 +21,7 @@ public class CsvUtils {
 	/**
 	 * Converts List Of Lead reports into CSV File.
 	 * 
-	 * @param List of {@link Lead}
+	 * @param lead of {@link Lead}
 	 * @return {@link ByteArrayInputStream}
 	 */
 	public static ByteArrayInputStream leadToCsv(List<Lead> lead) {
@@ -28,7 +31,7 @@ public class CsvUtils {
 			for (Lead leads : lead) {
 				List<Serializable> data = Arrays.asList(String.valueOf(leads.getId()), leads.getFirstName(),
 						leads.getLastName(), leads.getMobile(), leads.getArea(), leads.getExistingBroadband(),
-						leads.getLeadType(), leads.getAppUsers().getId(), leads.getDate(), leads.getRemarks());
+						leads.getLeadType(), Optional.ofNullable(leads.getAppUsers()).map(AppUsers::getName).orElse(""), leads.getDate(), leads.getRemarks());
 				csvPrinter.printRecord(data);
 			}
 			csvPrinter.flush();

@@ -23,10 +23,8 @@ public class DownloadLeadCsvServiceImpl implements IDownloadLeadCsvService {
 
 	@Override
 	public ByteArrayInputStream findLeadByDate(long from, long to, Integer id) {
-		Timestamp fromStamp = new Timestamp(from);
-		Date fromDate = new Date(fromStamp.getTime());
-		Timestamp toStamp = new Timestamp(to);
-		Date toDate = new Date(toStamp.getTime());
+		Date fromDate = new Date(from);
+		Date toDate = new Date(to);
 		if (id ==null) {
 			List<Lead> findLeadByDate = downloadLeadCsvRepository.findLeadByDate(fromDate, toDate);
 			return CsvUtils.leadToCsv(findLeadByDate);

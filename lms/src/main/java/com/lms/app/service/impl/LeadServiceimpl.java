@@ -1,9 +1,11 @@
 package com.lms.app.service.impl;
 
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import com.lms.app.to.AppUsersTo;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -64,11 +66,11 @@ public class LeadServiceimpl implements ILeadService {
 	 */
 	@Override
 	public List<LeadTo> findAllLeadReports(long from, long to, Integer id, Pageable pageable) {
-		Timestamp fromStamp = new Timestamp(from);
-		Date fromDate = new Date(fromStamp.getTime());
-		Timestamp toStamp = new Timestamp(to);
-		Date toDate = new Date(toStamp.getTime());
+		Date fromDate = new Date(from);
+		Date toDate = new Date(to);
+		List<Lead> leadForReports=new ArrayList<>();
 		if (id == null) {
+			// finding all records
 			Integer totalLeadCount = leadRepository.findNumberOfReportsByDate(fromDate, toDate);
 			int pageSize = pageable.getPageSize();
 			int pageNumber = pageable.getPageNumber();
@@ -76,25 +78,24 @@ public class LeadServiceimpl implements ILeadService {
 			if (pageNumber > totalPage)
 				throw new PageNotAvailableException();
 			else {
-				List<Lead> findAllByDate = leadRepository.findAllByDate(fromDate, toDate, pageable);
-				return (List<LeadTo>) findAllByDate.stream().map(lt -> {
-					LeadTo leadTo = dozerUtils.convert(lt, LeadTo.class);
-					Long appUserId = lt.getAppUsers().getId();
-					String appUserIdTo=""+appUserId;
-					leadTo.setAddedBy(appUserIdTo);
-					return leadTo;
-				}).collect(Collectors.toList());
+				leadForReports = Optional.ofNullable(leadRepository.findAllByDate(fromDate, toDate, pageable))
+						.filter(CollectionUtils::isNotEmpty).orElse(Collections.EMPTY_LIST);
 			}
 		} else {
-			List<Lead> findAllByDateAndId = leadRepository.findAllByDateAndId(fromDate, toDate, id, pageable);
-			return (List<LeadTo>) findAllByDateAndId.stream().map(lt -> {
-				LeadTo leadTo = dozerUtils.convert(lt, LeadTo.class);
-				Long appUserId = lt.getAppUsers().getId();
-				String appUserIdTo=""+appUserId;
-				leadTo.setAddedBy(appUserIdTo);
-				return leadTo;
-			}).collect(Collectors.toList());
+			leadForReports = Optional.ofNullable(leadRepository.findAllByDateAndId(fromDate, toDate, id, pageable))
+					.filter(CollectionUtils::isNotEmpty).orElse(Collections.EMPTY_LIST);
 		}
+
+		return (List<LeadTo>) leadForReports.stream().map(lt -> {
+			LeadTo leadTo = dozerUtils.convert(lt, LeadTo.class);
+			Long appUserId = Optional.ofNullable(lt.getAppUsers()).map(AppUsers::getId).orElse(1L);
+			String appUserIdTo=""+appUserId;
+			leadTo.setAddedBy(appUserIdTo);
+			leadTo.setAppUsersTo(Optional.ofNullable(lt.getAppUsers())
+					.map(appuser->dozerUtils.convert(appuser, AppUsersTo.class)).orElse(null));
+			return leadTo;
+		}).collect(Collectors.toList());
+
 	}
 
 	/**
@@ -106,17 +107,13 @@ public class LeadServiceimpl implements ILeadService {
 	 */
 	@Override
 	public Integer findNumberOfLeadReports(long from, long to, Integer id) {
-		Timestamp fromStamp = new Timestamp(from);
-		Date fromDate = new Date(fromStamp.getTime());
-		Timestamp toStamp = new Timestamp(to);
-		Date toDate = new Date(toStamp.getTime());
+		Date fromDate = new Date(from);
+		Date toDate = new Date(to);
 
-		if (id == null) {
-			int count = leadRepository.findNumberOfReportsByDate(fromDate, toDate);
-			return count;
+		if (null == id) {
+			return leadRepository.findNumberOfReportsByDate(fromDate, toDate);
 		} else {
-			int count = leadRepository.findNumberOfReportsByDateAndId(fromDate, toDate, id);
-			return count;
+			return leadRepository.findNumberOfReportsByDateAndId(fromDate, toDate, id);
 		}
 	}
 

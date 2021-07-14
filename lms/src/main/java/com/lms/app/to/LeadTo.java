@@ -40,5 +40,6 @@ public class LeadTo implements Serializable {
 			+ " Id of logged in user need to be given to know who is saving the Lead data",required = true)
 	private String addedBy;
 
+	private AppUsersTo appUsersTo;
 
 }
