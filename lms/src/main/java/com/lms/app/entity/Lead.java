@@ -38,7 +38,7 @@ public class Lead implements Serializable {
 	private String remarks;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "added_by", referencedColumnName = "id")
 	private AppUsers appUsers;
 
 }

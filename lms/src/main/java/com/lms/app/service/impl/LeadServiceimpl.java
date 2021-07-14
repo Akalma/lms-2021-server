@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 import com.lms.app.to.AppUsersTo;
 import org.apache.commons.collections.CollectionUtils;
+
+import com.lms.app.value.InvalidPayloadException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -41,6 +43,7 @@ public class LeadServiceimpl implements ILeadService {
 	 */
 	@Override
 	public LeadTo saveLead(LeadTo leadTo) {
+		if (leadTo.getAddedBy()==null) throw new InvalidPayloadException("must provide added by value.");
 		long addedBy = Long.parseLong(leadTo.getAddedBy());
 		AppUsers findById = appRepository.findAppUsersById(addedBy);
 		Lead lead = dozerUtils.convert(leadTo, Lead.class);
