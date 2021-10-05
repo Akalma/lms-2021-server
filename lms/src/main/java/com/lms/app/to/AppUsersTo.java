@@ -19,5 +19,6 @@ public class AppUsersTo implements Serializable {
 	private long createdOn;
 	private String remarks;
 	private Status status;
+	private String city;
 	
 }

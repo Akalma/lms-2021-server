@@ -29,4 +29,7 @@ public class RequestTo implements Serializable {
 	private int startPage;
 	@ApiModelProperty(value = "This is number of data which is needed on a given page.")
 	private int noOfData;
+
+	@ApiModelProperty(value = "This is city which is needed to fetch data.")
+	private String city;
 }

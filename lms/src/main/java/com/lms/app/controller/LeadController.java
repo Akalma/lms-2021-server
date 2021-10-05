@@ -45,6 +45,7 @@ public class LeadController {
 		Long from = request.getFromDate();
 		Long to = request.getToDate();
 		Integer id = request.getId();
+		String city = request.getCity();
 		if (from == null || to == null || from == null && to == null) {
 			Map<String, String> map = new HashMap<>();
 			map.put("message", "From date or To date is not given.");
@@ -57,7 +58,7 @@ public class LeadController {
 			return ResponseEntity.badRequest().body(map);
 		}
 		Pageable pageble = PageRequest.of(request.getStartPage() - 1, request.getNoOfData());
-		List<LeadTo> findAllByDate = iLeadService.findAllLeadReports(from, to, id, pageble);
+		List<LeadTo> findAllByDate = iLeadService.findAllLeadReports(from, to, id,city, pageble);
 		return ResponseEntity.ok(findAllByDate);
 	}
 

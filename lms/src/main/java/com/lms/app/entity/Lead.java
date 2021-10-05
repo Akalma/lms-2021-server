@@ -9,7 +9,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "lead")
+@Table(name = "leads")
 @Setter
 @Getter
 @NoArgsConstructor
@@ -38,7 +38,9 @@ public class Lead implements Serializable {
 	private String remarks;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "added_by", referencedColumnName = "id")
 	private AppUsers appUsers;
+	@Column(name = "city")
+	private String city;
 
 }
