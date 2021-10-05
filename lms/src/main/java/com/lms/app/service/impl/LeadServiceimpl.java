@@ -68,7 +68,7 @@ public class LeadServiceimpl implements ILeadService {
 	 * @return List of {@link LeadTo}
 	 */
 	@Override
-	public List<LeadTo> findAllLeadReports(long from, long to, Integer id, Pageable pageable) {
+	public List<LeadTo> findAllLeadReports(long from, long to, Integer id,String city, Pageable pageable) {
 		Date fromDate = new Date(from);
 		Date toDate = new Date(to);
 		List<Lead> leadForReports=new ArrayList<>();
@@ -81,11 +81,11 @@ public class LeadServiceimpl implements ILeadService {
 			if (pageNumber > totalPage)
 				throw new PageNotAvailableException();
 			else {
-				leadForReports = Optional.ofNullable(leadRepository.findAllByDate(fromDate, toDate, pageable))
+				leadForReports = Optional.ofNullable(leadRepository.findAllByDate(fromDate, toDate,city, pageable))
 						.filter(CollectionUtils::isNotEmpty).orElse(Collections.EMPTY_LIST);
 			}
 		} else {
-			leadForReports = Optional.ofNullable(leadRepository.findAllByDateAndId(fromDate, toDate, id, pageable))
+			leadForReports = Optional.ofNullable(leadRepository.findAllByDateAndId(fromDate, toDate, id,city, pageable))
 					.filter(CollectionUtils::isNotEmpty).orElse(Collections.EMPTY_LIST);
 		}
 

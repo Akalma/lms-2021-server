@@ -41,5 +41,6 @@ public class LeadTo implements Serializable {
 	private String addedBy;
 
 	private AppUsersTo appUsersTo;
+	private String city;
 
 }
