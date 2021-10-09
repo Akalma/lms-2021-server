@@ -31,9 +31,9 @@ public class CsvUtils {
 				CSVPrinter csvPrinter = new CSVPrinter(new PrintWriter(out), format);) {
 			for (LeadView leads : lead) {
 				List<Serializable> data = Arrays.asList(String.valueOf(leads.getId()), leads.getFirstName(),
-						leads.getLastName(), leads.getMobile(), leads.getArea(), leads.getExistingBroadband(),
+						leads.getLastName(), " "+leads.getMobile()+" ", leads.getArea(), leads.getExistingBroadband(),
 						leads.getLeadType(), Optional.ofNullable(leads.getAppUsers()).map(AppUsers::getName).orElse(""),
-						String.valueOf(leads.getDate()), leads.getRemarks(),leads.getOBMRID(),leads.getCity());
+						" "+leads.getDate()+" ", leads.getRemarks(),leads.getOBMRID(),leads.getCity());
 				csvPrinter.printRecord(data);
 			}
 			csvPrinter.flush();
