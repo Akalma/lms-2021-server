@@ -4,6 +4,8 @@ import java.io.ByteArrayInputStream;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+
+import com.lms.app.entity.LeadView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.lms.app.entity.Lead;
@@ -22,14 +24,14 @@ public class DownloadLeadCsvServiceImpl implements IDownloadLeadCsvService {
 	}
 
 	@Override
-	public ByteArrayInputStream findLeadByDate(long from, long to, Integer id) {
+	public ByteArrayInputStream findLeadByDate(long from, long to, Integer id,String city) {
 		Date fromDate = new Date(from);
 		Date toDate = new Date(to);
 		if (id ==null) {
-			List<Lead> findLeadByDate = downloadLeadCsvRepository.findLeadByDate(fromDate, toDate);
+			List<LeadView> findLeadByDate = downloadLeadCsvRepository.findLeadByDate(fromDate, toDate,city);
 			return CsvUtils.leadToCsv(findLeadByDate);
 		} else {
-			List<Lead> findAllByDateAndId = downloadLeadCsvRepository.findAllByDateAndId(fromDate, toDate, id);
+			List<LeadView> findAllByDateAndId = downloadLeadCsvRepository.findAllByDateAndId(fromDate, toDate, id,city);
 			return CsvUtils.leadToCsv(findAllByDateAndId);
 		}
 

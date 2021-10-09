@@ -3,6 +3,8 @@ package com.lms.app.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.lms.app.to.LeadViewTo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -58,7 +60,7 @@ public class LeadController {
 			return ResponseEntity.badRequest().body(map);
 		}
 		Pageable pageble = PageRequest.of(request.getStartPage() - 1, request.getNoOfData());
-		List<LeadTo> findAllByDate = iLeadService.findAllLeadReports(from, to, id,city, pageble);
+		List<LeadViewTo> findAllByDate = iLeadService.findAllLeadReports(from, to, id,city, pageble);
 		return ResponseEntity.ok(findAllByDate);
 	}
 

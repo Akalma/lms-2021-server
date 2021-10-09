@@ -39,13 +39,14 @@ public class DownloadLeadCsvController {
 		Long from = request.getFromDate();
 		Long to = request.getToDate();
 		Integer id = request.getId();
+		String city = request.getCity();
 		if (from == null || to == null || from == null && to == null) {
 			Map<String, String> map = new HashMap<>();
 			map.put("message", "From date or To date is not given.");
 			return ResponseEntity.badRequest().body(map);
 		}
 		String fileName = "lead.csv";
-		InputStreamResource file = new InputStreamResource(iDownloadLeadCsvService.findLeadByDate(from, to, id));
+		InputStreamResource file = new InputStreamResource(iDownloadLeadCsvService.findLeadByDate(from, to, id,city));
 		return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
 				.contentType(org.springframework.http.MediaType.parseMediaType("application/csv")).body(file);
 

@@ -4,7 +4,10 @@ import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.lms.app.entity.LeadView;
+import com.lms.app.repository.LeadViewRepository;
 import com.lms.app.to.AppUsersTo;
+import com.lms.app.to.LeadViewTo;
 import org.apache.commons.collections.CollectionUtils;
 
 import com.lms.app.value.InvalidPayloadException;
@@ -27,12 +30,15 @@ public class LeadServiceimpl implements ILeadService {
 	private LeadRepository leadRepository;
 	private AppUsersRepository appRepository;
 	private DozerUtils dozerUtils;
+	private LeadViewRepository leadViewRepository;
 
 	@Autowired
-	public LeadServiceimpl(LeadRepository leadRepository, DozerUtils dozerUtils, AppUsersRepository appRepository) {
+	public LeadServiceimpl(LeadRepository leadRepository, DozerUtils dozerUtils, AppUsersRepository appRepository,
+						   LeadViewRepository leadViewRepository) {
 		this.leadRepository = leadRepository;
 		this.dozerUtils = dozerUtils;
 		this.appRepository = appRepository;
+		this.leadViewRepository=leadViewRepository;
 	}
 
 	/**
@@ -68,29 +74,29 @@ public class LeadServiceimpl implements ILeadService {
 	 * @return List of {@link LeadTo}
 	 */
 	@Override
-	public List<LeadTo> findAllLeadReports(long from, long to, Integer id,String city, Pageable pageable) {
+	public List<LeadViewTo> findAllLeadReports(long from, long to, Integer id,String city, Pageable pageable) {
 		Date fromDate = new Date(from);
 		Date toDate = new Date(to);
-		List<Lead> leadForReports=new ArrayList<>();
+		List<LeadView> leadForReports=new ArrayList<>();
 		if (id == null) {
 			// finding all records
-			Integer totalLeadCount = leadRepository.findNumberOfReportsByDate(fromDate, toDate);
+			Integer totalLeadCount = leadViewRepository.findNumberOfReportsByDate(fromDate, toDate);
 			int pageSize = pageable.getPageSize();
 			int pageNumber = pageable.getPageNumber();
 			int totalPage = (totalLeadCount / pageSize);
 			if (pageNumber > totalPage)
 				throw new PageNotAvailableException();
 			else {
-				leadForReports = Optional.ofNullable(leadRepository.findAllByDate(fromDate, toDate,city, pageable))
+				leadForReports = Optional.ofNullable(leadViewRepository.findAllByDate(fromDate, toDate,city, pageable))
 						.filter(CollectionUtils::isNotEmpty).orElse(Collections.EMPTY_LIST);
 			}
 		} else {
-			leadForReports = Optional.ofNullable(leadRepository.findAllByDateAndId(fromDate, toDate, id,city, pageable))
+			leadForReports = Optional.ofNullable(leadViewRepository.findAllByDateAndId(fromDate, toDate, id,city, pageable))
 					.filter(CollectionUtils::isNotEmpty).orElse(Collections.EMPTY_LIST);
 		}
 
-		return (List<LeadTo>) leadForReports.stream().map(lt -> {
-			LeadTo leadTo = dozerUtils.convert(lt, LeadTo.class);
+		return (List<LeadViewTo>) leadForReports.stream().map(lt -> {
+			LeadViewTo leadTo = dozerUtils.convert(lt, LeadViewTo.class);
 			Long appUserId = Optional.ofNullable(lt.getAppUsers()).map(AppUsers::getId).orElse(1L);
 			String appUserIdTo=""+appUserId;
 			leadTo.setAddedBy(appUserIdTo);
@@ -114,9 +120,9 @@ public class LeadServiceimpl implements ILeadService {
 		Date toDate = new Date(to);
 
 		if (null == id) {
-			return leadRepository.findNumberOfReportsByDate(fromDate, toDate);
+			return leadViewRepository.findNumberOfReportsByDate(fromDate, toDate);
 		} else {
-			return leadRepository.findNumberOfReportsByDateAndId(fromDate, toDate, id);
+			return leadViewRepository.findNumberOfReportsByDateAndId(fromDate, toDate, id);
 		}
 	}
 
