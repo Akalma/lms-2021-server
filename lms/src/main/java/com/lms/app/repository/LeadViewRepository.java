@@ -41,10 +41,10 @@ public interface LeadViewRepository extends JpaRepository<LeadView, Long> {
 	 * @param to TO date
 	 * @return {@link Integer}
 	 */
-	@Query(value = "select count(*) from vw_leads where created_date between :from and :to", nativeQuery = true)
-	public Integer findNumberOfReportsByDate(@Param("from") Date from, @Param("to") Date to);
+	@Query(value = "select count(*) from vw_leads where city like :city% and created_date between :from and :to", nativeQuery = true)
+	public Integer findNumberOfReportsByDate(@Param("city") String city,@Param("from") Date from, @Param("to") Date to);
 
-	@Query(value = "select count(*) from vw_leads where created_date between :from and :to and added_by =:id", nativeQuery = true)
-	public Integer findNumberOfReportsByDateAndId(@Param("from") Date from, @Param("to") Date to, @Param("id") Integer id);
+	@Query(value = "select count(*) from vw_leads where city like :city% and created_date between :from and :to and added_by =:id", nativeQuery = true)
+	public Integer findNumberOfReportsByDateAndId(@Param("city") String city,@Param("from") Date from, @Param("to") Date to, @Param("id") Integer id);
 
 }

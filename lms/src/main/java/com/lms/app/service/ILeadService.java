@@ -12,5 +12,5 @@ public interface ILeadService {
 
 	public List<LeadViewTo> findAllLeadReports(long from, long to, Integer id, String city, Pageable pageable);
 	
-	public Integer findNumberOfLeadReports(long from,long to,Integer id);
+	public Integer findNumberOfLeadReports(String city,long from,long to,Integer id);
 }

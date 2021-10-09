@@ -71,12 +71,13 @@ public class LeadController {
 		Long from = request.getFromDate();
 		Long to = request.getToDate();
 		Integer id = request.getId();
+		String city= request.getCity();
 		if (from == null || to == null || from == null && to == null) {
 			Map<String, String> map = new HashMap<>();
 			map.put("message", "From date or To date is not given.");
 			return ResponseEntity.badRequest().body(map);
 		}
-		Integer findNumberOfLeadReports = iLeadService.findNumberOfLeadReports(from, to, id);
+		Integer findNumberOfLeadReports = iLeadService.findNumberOfLeadReports(city,from, to, id);
 		Map<String, Integer> m = new HashMap<>();
 		m.put("count", findNumberOfLeadReports);
 		return ResponseEntity.ok(m);

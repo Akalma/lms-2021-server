@@ -80,7 +80,7 @@ public class LeadServiceimpl implements ILeadService {
 		List<LeadView> leadForReports=new ArrayList<>();
 		if (id == null) {
 			// finding all records
-			Integer totalLeadCount = leadViewRepository.findNumberOfReportsByDate(fromDate, toDate);
+			Integer totalLeadCount = leadViewRepository.findNumberOfReportsByDate(city,fromDate, toDate);
 			int pageSize = pageable.getPageSize();
 			int pageNumber = pageable.getPageNumber();
 			int totalPage = (totalLeadCount / pageSize);
@@ -115,14 +115,14 @@ public class LeadServiceimpl implements ILeadService {
 	 * @param id   AppUser Id
 	 */
 	@Override
-	public Integer findNumberOfLeadReports(long from, long to, Integer id) {
+	public Integer findNumberOfLeadReports(String city,long from, long to, Integer id) {
 		Date fromDate = new Date(from);
 		Date toDate = new Date(to);
 
 		if (null == id) {
-			return leadViewRepository.findNumberOfReportsByDate(fromDate, toDate);
+			return leadViewRepository.findNumberOfReportsByDate(city,fromDate, toDate);
 		} else {
-			return leadViewRepository.findNumberOfReportsByDateAndId(fromDate, toDate, id);
+			return leadViewRepository.findNumberOfReportsByDateAndId(city,fromDate, toDate, id);
 		}
 	}
 

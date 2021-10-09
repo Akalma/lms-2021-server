@@ -29,10 +29,9 @@ public class CsvUtils {
 		final CSVFormat format = CSVFormat.DEFAULT.withHeader(headers);
 		try (ByteArrayOutputStream out = new ByteArrayOutputStream();
 				CSVPrinter csvPrinter = new CSVPrinter(new PrintWriter(out), format);) {
-			System.out.println(lead.size());
 			for (LeadView leads : lead) {
 				List<Serializable> data = Arrays.asList(String.valueOf(leads.getId()), leads.getFirstName(),
-						leads.getLastName(), "=\""+leads.getMobile()+"\"", leads.getArea(), leads.getExistingBroadband(),
+						leads.getLastName(), "=\""+leads.getMobile()+"\"", "=\""+leads.getArea()+"\"", leads.getExistingBroadband(),
 						leads.getLeadType(), Optional.ofNullable(leads.getAppUsers()).map(AppUsers::getName).orElse(""),
 						"=\""+leads.getDate()+"\"", leads.getRemarks(),"=\""+leads.getOBMRID()+"\"",leads.getCity());
 				csvPrinter.printRecord(data);
