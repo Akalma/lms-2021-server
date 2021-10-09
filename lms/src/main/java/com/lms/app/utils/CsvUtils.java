@@ -17,7 +17,7 @@ import com.lms.app.entity.Lead;
 import org.apache.commons.lang.StringUtils;
 
 public class CsvUtils {
-	private static final String[] headers = { "Id", "First Name", "Last Name", "Mobile", "Area", "Existing Broadband",
+	private static final String[] headers = { "First Name", "Last Name", "Mobile", "Area", "Existing Broadband",
 			"Lead Type", "Added By", "Created Date", "Remarks","OBMR_ID","city" };
 
 	/**
@@ -36,7 +36,7 @@ public class CsvUtils {
 					area=area.replace("#","");
 					leads.setArea(area);
 				}
-				List<Serializable> data = Arrays.asList(String.valueOf(leads.getId()), leads.getFirstName(),
+				List<Serializable> data = Arrays.asList(leads.getFirstName(),
 						leads.getLastName(), "=\""+leads.getMobile()+"\"", leads.getArea(), leads.getExistingBroadband(),
 						leads.getLeadType(), Optional.ofNullable(leads.getAppUsers()).map(AppUsers::getName).orElse(""),
 						"=\""+leads.getDate()+"\"", leads.getRemarks(),"=\""+leads.getOBMRID()+"\"",leads.getCity());
