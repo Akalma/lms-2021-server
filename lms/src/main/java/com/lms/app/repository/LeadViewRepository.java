@@ -20,7 +20,7 @@ public interface LeadViewRepository extends JpaRepository<LeadView, Long> {
 	 * @param to   To Date
 	 * @return List of Reports.
 	 */
-	@Query(value = "select * from vw_leads where created_date between :from and :to and city like :city%  order by created_date desc", nativeQuery = true)
+	@Query(value = "select * from vw_leads where city like :city% and created_date between :from and :to order by created_date desc", nativeQuery = true)
 	public List<LeadView> findAllByDate(@Param("from") Date from, @Param("to") Date to,@Param("city") String city, Pageable pageable);
 
 	/**
@@ -31,7 +31,7 @@ public interface LeadViewRepository extends JpaRepository<LeadView, Long> {
 	 * @param id   AppUser Id
 	 * @return List of Reports.
 	 */
-	@Query(value = "select * from vw_leads where created_date between :from and :to and added_by =:id and city like :city% order by created_date desc", nativeQuery = true)
+	@Query(value = "select * from vw_leads where city like :city% and  created_date between :from and :to and added_by =:id order by created_date desc", nativeQuery = true)
 	public List<LeadView> findAllByDateAndId(@Param("from") Date from, @Param("to") Date to, @Param("id") Integer id,@Param("city") String city,
 			Pageable pageable);
 
