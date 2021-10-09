@@ -33,7 +33,7 @@ public class CsvUtils {
 				List<Serializable> data = Arrays.asList(String.valueOf(leads.getId()), leads.getFirstName(),
 						leads.getLastName(), "=\""+leads.getMobile()+"\"", leads.getArea(), leads.getExistingBroadband(),
 						leads.getLeadType(), Optional.ofNullable(leads.getAppUsers()).map(AppUsers::getName).orElse(""),
-						"=\""+leads.getDate()+"\"", leads.getRemarks(),leads.getOBMRID(),leads.getCity());
+						"\""+leads.getDate()+"\"", leads.getRemarks(),leads.getOBMRID(),leads.getCity());
 				csvPrinter.printRecord(data);
 			}
 			csvPrinter.flush();
