@@ -14,6 +14,7 @@ import com.lms.app.entity.LeadView;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import com.lms.app.entity.Lead;
+import org.apache.commons.lang.StringUtils;
 
 public class CsvUtils {
 	private static final String[] headers = { "Id", "First Name", "Last Name", "Mobile", "Area", "Existing Broadband",
@@ -30,8 +31,13 @@ public class CsvUtils {
 		try (ByteArrayOutputStream out = new ByteArrayOutputStream();
 				CSVPrinter csvPrinter = new CSVPrinter(new PrintWriter(out), format);) {
 			for (LeadView leads : lead) {
+				if(StringUtils.isNotEmpty(leads.getArea()) && leads.getArea().contains("#")){
+					String area=leads.getArea();
+					area=area.replace("#","");
+					leads.setArea(area);
+				}
 				List<Serializable> data = Arrays.asList(String.valueOf(leads.getId()), leads.getFirstName(),
-						leads.getLastName(), "=\""+leads.getMobile()+"\"", "'#9, 5th main, 18th cross, BTM 2nd stage-560076", leads.getExistingBroadband(),
+						leads.getLastName(), "=\""+leads.getMobile()+"\"", leads.getArea(), leads.getExistingBroadband(),
 						leads.getLeadType(), Optional.ofNullable(leads.getAppUsers()).map(AppUsers::getName).orElse(""),
 						"=\""+leads.getDate()+"\"", leads.getRemarks(),"=\""+leads.getOBMRID()+"\"",leads.getCity());
 				csvPrinter.printRecord(data);
